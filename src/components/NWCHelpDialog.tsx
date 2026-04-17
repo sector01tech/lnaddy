@@ -32,12 +32,96 @@ export function NWCHelpDialog({ trigger }: NWCHelpDialogProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs defaultValue="alby" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="alby">Alby</TabsTrigger>
-            <TabsTrigger value="wos">Wallet of Satoshi</TabsTrigger>
-            <TabsTrigger value="zeus">Zeus</TabsTrigger>
+        <Tabs defaultValue="albyhub" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="albyhub">Alby Hub ⚡</TabsTrigger>
+            <TabsTrigger value="alby">Alby Extension</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="albyhub" className="space-y-4">
+            <Card className="border-primary/30 bg-primary/5">
+              <CardContent className="p-4 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center text-white font-bold text-lg">
+                    ⚡
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-lg">Alby Hub</h4>
+                    <p className="text-xs text-muted-foreground">Free Lightning wallet with NWC</p>
+                  </div>
+                  <Badge variant="secondary" className="ml-auto bg-green-500/20 text-green-400">Recommended</Badge>
+                </div>
+
+                <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/30">
+                  <p className="text-sm text-green-400">
+                    Alby Hub provides a free Lightning wallet with built-in NWC support. Perfect for receiving payments to your UnityPay address!
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <h5 className="text-sm font-medium">How to connect Alby Hub:</h5>
+                  
+                  <div className="space-y-2 text-sm text-muted-foreground">
+                    <div className="flex gap-2">
+                      <span className="text-primary font-mono text-xs">1.</span>
+                      <span>Go to <strong className="text-foreground">hub.getalby.com</strong></span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="text-primary font-mono text-xs">2.</span>
+                      <span>Create an account or log in</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="text-primary font-mono text-xs">3.</span>
+                      <span>Click <strong className="text-foreground">Settings</strong> ⚙️</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="text-primary font-mono text-xs">4.</span>
+                      <span>Click <strong className="text-foreground">Advanced</strong> → <strong className="text-foreground">Nostr Wallet Connect</strong></span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="text-primary font-mono text-xs">5.</span>
+                      <span>Click <strong className="text-foreground">Create Connection</strong></span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="text-primary font-mono text-xs">6.</span>
+                      <span>Copy the <strong className="text-foreground">nostr+walletconnect://...</strong> string</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 pt-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => window.open('https://hub.getalby.com', '_blank')}
+                    >
+                      Open Alby Hub
+                      <svg className="w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="space-y-3 pt-2 border-t border-border/30">
+                  <h5 className="text-sm font-medium">Getting your first sats:</h5>
+                  <div className="space-y-2 text-sm text-muted-foreground">
+                    <div className="flex gap-2">
+                      <span className="text-primary font-mono text-xs">1.</span>
+                      <span>In Alby Hub, go to <strong className="text-foreground">Bitcoin</strong></span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="text-primary font-mono text-xs">2.</span>
+                      <span>Click <strong className="text-foreground">Get Bitcoin</strong></span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="text-primary font-mono text-xs">3.</span>
+                      <span>Use a faucet or buy with fiat to fund your wallet</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="alby" className="space-y-4">
             <Card className="border-border/50 bg-background/50">
@@ -47,10 +131,9 @@ export function NWCHelpDialog({ trigger }: NWCHelpDialogProps) {
                     A
                   </div>
                   <div>
-                    <h4 className="font-semibold">Alby</h4>
-                    <p className="text-xs text-muted-foreground">Browser extension & mobile</p>
+                    <h4 className="font-semibold">Alby Extension</h4>
+                    <p className="text-xs text-muted-foreground">Browser extension</p>
                   </div>
-                  <Badge variant="secondary" className="ml-auto">Popular</Badge>
                 </div>
 
                 <div className="space-y-3">
@@ -59,7 +142,7 @@ export function NWCHelpDialog({ trigger }: NWCHelpDialogProps) {
                   <div className="space-y-2 text-sm text-muted-foreground">
                     <div className="flex gap-2">
                       <span className="text-primary font-mono text-xs">1.</span>
-                      <span>Open Alby extension or app</span>
+                      <span>Open Alby extension</span>
                     </div>
                     <div className="flex gap-2">
                       <span className="text-primary font-mono text-xs">2.</span>
@@ -85,119 +168,7 @@ export function NWCHelpDialog({ trigger }: NWCHelpDialogProps) {
                       size="sm"
                       onClick={() => window.open('https://getalby.com', '_blank')}
                     >
-                      Open Alby Website
-                      <svg className="w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="wos" className="space-y-4">
-            <Card className="border-border/50 bg-background/50">
-              <CardContent className="p-4 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-                    W
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Wallet of Satoshi</h4>
-                    <p className="text-xs text-muted-foreground">Mobile app (iOS & Android)</p>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <h5 className="text-sm font-medium">How to get your NWC connection:</h5>
-                  
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <div className="flex gap-2">
-                      <span className="text-primary font-mono text-xs">1.</span>
-                      <span>Open Wallet of Satoshi app</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-primary font-mono text-xs">2.</span>
-                      <span>Tap <strong className="text-foreground">Settings</strong> (gear icon)</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-primary font-mono text-xs">3.</span>
-                      <span>Tap <strong className="text-foreground">Nostr Wallet Connect</strong></span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-primary font-mono text-xs">4.</span>
-                      <span>Tap <strong className="text-foreground">Add Connection</strong></span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-primary font-mono text-xs">5.</span>
-                      <span>Tap <strong className="text-foreground">Copy</strong> to copy the connection string</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => window.open('https://walletofsatoshi.com', '_blank')}
-                    >
-                      Open Wallet of Satoshi
-                      <svg className="w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="zeus" className="space-y-4">
-            <Card className="border-border/50 bg-background/50">
-              <CardContent className="p-4 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-black dark:bg-white flex items-center justify-center text-white dark:text-black font-bold">
-                    Z
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Zeus Node</h4>
-                    <p className="text-xs text-muted-foreground">Mobile app (iOS & Android)</p>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <h5 className="text-sm font-medium">How to get your NWC connection:</h5>
-                  
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <div className="flex gap-2">
-                      <span className="text-primary font-mono text-xs">1.</span>
-                      <span>Open Zeus app and go to your node</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-primary font-mono text-xs">2.</span>
-                      <span>Tap the <strong className="text-foreground">menu</strong> (three dots)</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-primary font-mono text-xs">3.</span>
-                      <span>Tap <strong className="text-foreground">Connect App</strong></span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-primary font-mono text-xs">4.</span>
-                      <span>Tap <strong className="text-foreground">Create App</strong> to generate new credentials</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-primary font-mono text-xs">5.</span>
-                      <span>Copy the <strong className="text-foreground">nostr+walletconnect://...</strong> string</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => window.open('https://zeusln.com', '_blank')}
-                    >
-                      Open Zeus Website
+                      Get Alby Extension
                       <svg className="w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
