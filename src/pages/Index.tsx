@@ -6,8 +6,94 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { QRCodeCanvas } from '@/components/ui/qrcode';
 import { useLightningAddressInternal, type LightningAddress } from '@/hooks/useLightningAddress';
 import { useToast } from '@/hooks/useToast';
+
+function QRCodeDialog({ 
+  address,
+  open,
+  onOpenChange
+}: { 
+  address: LightningAddress;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const fullAddress = `${address.username}@${address.domain}`;
+  
+  // Generate LNURL for payment (this would need a backend in production)
+  // For now, we show the lightning address as the LNURL
+  const lnurlData = `lightning:${fullAddress}`;
+  
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="bg-card border-border sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="text-xl">Scan to Pay</DialogTitle>
+          <DialogDescription>
+            Send sats to {fullAddress}
+          </DialogDescription>
+        </DialogHeader>
+        
+        <div className="flex flex-col items-center py-4">
+          <div className="bg-white p-4 rounded-xl mb-4">
+            <QRCodeCanvas 
+              value={lnurlData} 
+              size={200} 
+              level="M"
+              className="rounded-lg"
+            />
+          </div>
+          
+          <div className="space-y-3 w-full">
+            <div className="p-3 rounded-lg bg-background/50 border border-border/50">
+              <p className="text-xs text-muted-foreground mb-1">Lightning Address</p>
+              <code className="text-sm font-mono text-primary break-all">
+                {fullAddress}
+              </code>
+            </div>
+            
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  navigator.clipboard.writeText(fullAddress);
+                }}
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2v0a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                Copy
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  navigator.clipboard.writeText(lnurlData);
+                }}
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+                Copy LNURL
+              </Button>
+            </div>
+          </div>
+          
+          {address.nwcConnection && (
+            <div className="mt-4 pt-4 border-t border-border/30 w-full text-center">
+              <span className="flex items-center justify-center gap-2 text-green-500">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                Wallet Connected - Payments will arrive in your linked wallet
+              </span>
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 function AddressCard({ 
   address, 
@@ -26,6 +112,7 @@ function AddressCard({
 }) {
   const [showNWCInput, setShowNWCInput] = useState(false);
   const [nwcString, setNWCString] = useState('');
+  const [showQRDialog, setShowQRDialog] = useState(false);
   const fullAddress = `${address.username}@${address.domain}`;
   
   const handleLinkNWC = () => {
@@ -37,109 +124,129 @@ function AddressCard({
   };
 
   return (
-    <Card className="border border-border/50 bg-card/50 backdrop-blur-sm">
-      <CardContent className="p-6">
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <code className="text-xl font-mono font-semibold text-foreground truncate">
-                {fullAddress}
-              </code>
-              {isPrimary && (
-                <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
-                  Primary
-                </Badge>
+    <>
+      <Card className="border border-border/50 bg-card/50 backdrop-blur-sm">
+        <CardContent className="p-6">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <code className="text-xl font-mono font-semibold text-foreground truncate">
+                  {fullAddress}
+                </code>
+                {isPrimary && (
+                  <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
+                    Primary
+                  </Badge>
+                )}
+              </div>
+              
+              {address.alias && (
+                <p className="text-sm text-muted-foreground mb-2">
+                  Also known as: {address.alias}
+                </p>
               )}
+              
+              <div className="flex items-center gap-2 text-sm">
+                {address.nwcConnection ? (
+                  <span className="flex items-center gap-1.5 text-green-500">
+                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                    Wallet Connected
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1.5 text-muted-foreground">
+                    <span className="w-2 h-2 rounded-full bg-muted-foreground/30" />
+                    No wallet linked
+                  </span>
+                )}
+              </div>
             </div>
             
-            {address.alias && (
-              <p className="text-sm text-muted-foreground mb-2">
-                Also known as: {address.alias}
-              </p>
-            )}
-            
-            <div className="flex items-center gap-2 text-sm">
-              {address.nwcConnection ? (
-                <span className="flex items-center gap-1.5 text-green-500">
-                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  Wallet Connected
-                </span>
-              ) : (
-                <span className="flex items-center gap-1.5 text-muted-foreground">
-                  <span className="w-2 h-2 rounded-full bg-muted-foreground/30" />
-                  No wallet linked
-                </span>
+            <div className="flex flex-wrap gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setShowQRDialog(true)}
+                className="border-primary/30 hover:bg-primary/10"
+              >
+                <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                </svg>
+                QR
+              </Button>
+              
+              {!isPrimary && address.nwcConnection && (
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => onSetPrimary(address.id)}
+                  className="border-primary/30 hover:bg-primary/10"
+                >
+                  Primary
+                </Button>
               )}
+              
+              {address.nwcConnection ? (
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => onUnlinkNWC(address.id)}
+                  className="border-destructive/30 hover:bg-destructive/10 text-destructive"
+                >
+                  Unlink
+                </Button>
+              ) : (
+                <Button 
+                  variant="default" 
+                  size="sm"
+                  onClick={() => setShowNWCInput(!showNWCInput)}
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  Link Wallet
+                </Button>
+              )}
+              
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => onDelete(address.id)}
+                className="text-destructive hover:text-destructive hover:bg-destructive/10"
+              >
+                Delete
+              </Button>
             </div>
           </div>
           
-          <div className="flex flex-wrap gap-2">
-            {!isPrimary && address.nwcConnection && (
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => onSetPrimary(address.id)}
-                className="border-primary/30 hover:bg-primary/10"
-              >
-                Set Primary
-              </Button>
-            )}
-            
-            {address.nwcConnection ? (
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => onUnlinkNWC(address.id)}
-                className="border-destructive/30 hover:bg-destructive/10 text-destructive"
-              >
-                Unlink
-              </Button>
-            ) : (
-              <Button 
-                variant="default" 
-                size="sm"
-                onClick={() => setShowNWCInput(!showNWCInput)}
-                className="bg-primary hover:bg-primary/90"
-              >
-                Link Wallet
-              </Button>
-            )}
-            
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => onDelete(address.id)}
-              className="text-destructive hover:text-destructive hover:bg-destructive/10"
-            >
-              Delete
-            </Button>
-          </div>
-        </div>
-        
-        {showNWCInput && (
-          <div className="mt-4 pt-4 border-t border-border/50">
-            <div className="flex flex-col sm:flex-row gap-2">
-              <Input
-                placeholder="nostr+walletconnect://..."
-                value={nwcString}
-                onChange={(e) => setNWCString(e.target.value)}
-                className="flex-1 bg-background/50 border-border/50 font-mono"
-              />
-              <Button 
-                onClick={handleLinkNWC}
-                disabled={!nwcString.trim()}
-                className="bg-primary hover:bg-primary/90"
-              >
-                Connect
-              </Button>
+          {showNWCInput && (
+            <div className="mt-4 pt-4 border-t border-border/50">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Input
+                  placeholder="nostr+walletconnect://..."
+                  value={nwcString}
+                  onChange={(e) => setNWCString(e.target.value)}
+                  className="flex-1 bg-background/50 border-border/50 font-mono"
+                />
+                <Button 
+                  onClick={handleLinkNWC}
+                  disabled={!nwcString.trim()}
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  Connect
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Paste your NWC connection string from Alby, Wallet of Satoshi, or other NIP-98 compatible wallet
+              </p>
             </div>
-            <p className="text-xs text-muted-foreground mt-2">
-              Paste your NWC connection string from Alby, Wallet of Satoshi, or other NIP-98 compatible wallet
-            </p>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+          )}
+        </CardContent>
+      </Card>
+      
+      <QRCodeDialog 
+        address={address}
+        open={showQRDialog}
+        onOpenChange={setShowQRDialog}
+      />
+    </>
   );
 }
 
@@ -425,17 +532,19 @@ export default function Index() {
                       </code>
                     </div>
                     
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => copyToClipboard(`${activeAddress.username}@${activeAddress.domain}`)}
-                      className="border-primary/30 hover:bg-primary/10"
-                    >
-                      <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2v0a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                      </svg>
-                      Copy
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => copyToClipboard(`${activeAddress.username}@${activeAddress.domain}`)}
+                        className="border-primary/30 hover:bg-primary/10"
+                      >
+                        <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2v0a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        Copy
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
