@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { QRCodeCanvas } from '@/components/ui/qrcode';
+import { NWCHelpDialog } from '@/components/NWCHelpDialog';
 import { useLightningAddressInternal, type LightningAddress } from '@/hooks/useLightningAddress';
 import { useToast } from '@/hooks/useToast';
 
@@ -233,9 +234,18 @@ function AddressCard({
                   Connect
                 </Button>
               </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                Paste your NWC connection string from Alby, Wallet of Satoshi, or other NIP-98 compatible wallet
-              </p>
+              <div className="flex items-center justify-between mt-2">
+                <p className="text-xs text-muted-foreground">
+                  Paste your NWC connection string from Alby, Wallet of Satoshi, or other NIP-98 compatible wallet
+                </p>
+                <NWCHelpDialog
+                  trigger={
+                    <button className="text-xs text-primary hover:underline">
+                      How to get NWC?
+                    </button>
+                  }
+                />
+              </div>
             </div>
           )}
         </CardContent>
@@ -499,15 +509,27 @@ export default function Index() {
               </div>
             </div>
             
-            <Button
-              onClick={() => setShowCreateDialog(true)}
-              className="bg-primary hover:bg-primary/90"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              <span className="hidden sm:inline">New Address</span>
-            </Button>
+            <div className="flex gap-2">
+              <NWCHelpDialog
+                trigger={
+                  <Button variant="outline" className="border-border/50">
+                    <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.002 2.577-.359.021-.717-.008-1.055-.074m0 5.838c-.814.008-1.595.122-2.3.337-1.355.414-2.3 1.682-2.3 3.156 0 1.516 1.164 2.75 2.692 2.988 1.336.208 2.733.208 4.068 0 1.528-.238 2.692-1.472 2.692-2.988 0-1.474-.945-2.742-2.3-3.156-.705-.215-1.486-.33-2.3-.337m0 5.838c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1z" />
+                    </svg>
+                    <span className="hidden sm:inline">Help</span>
+                  </Button>
+                }
+              />
+              <Button
+                onClick={() => setShowCreateDialog(true)}
+                className="bg-primary hover:bg-primary/90"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                <span className="hidden sm:inline">New Address</span>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
