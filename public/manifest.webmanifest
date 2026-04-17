@@ -1,0 +1,29 @@
+{
+  "name": "UnityPay - Lightning Addresses",
+  "short_name": "UnityPay",
+  "description": "Create custom lightning addresses and link them to NWC for instant Bitcoin payments via Nostr",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#f97316",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://blossom.ditto.pub/f62cec9fbce4afbbf78a86f6c9457219c8cc5ec94a4a9a2b07a8d01c454a190d.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://blossom.ditto.pub/f62cec9fbce4afbbf78a86f6c9457219c8cc5ec94a4a9a2b07a8d01c454a190d.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "business"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}

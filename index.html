@@ -2,15 +2,43 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#f97316">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="UnityPay">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="UnityPay">
+    <meta name="msapplication-TileColor" content="#f97316">
+    <meta name="msapplication-tap-highlight" content="no">
+    
     <meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-src 'self' https:; font-src 'self'; base-uri 'self'; manifest-src 'self'; connect-src 'self' blob: https: wss:; img-src 'self' data: blob: https:; media-src 'self' https:">
+    
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="icon" type="image/png" href="https://blossom.ditto.pub/f62cec9fbce4afbbf78a86f6c9457219c8cc5ec94a4a9a2b07a8d01c454a190d.png">
     <link rel="apple-touch-icon" href="https://blossom.ditto.pub/f62cec9fbce4afbbf78a86f6c9457219c8cc5ec94a4a9a2b07a8d01c454a190d.png">
+    <link rel="apple-touch-startup-image" href="https://blossom.ditto.pub/f62cec9fbce4afbbf78a86f6c9457219c8cc5ec94a4a9a2b07a8d01c454a190d.png">
+    
     <title>UnityPay - Lightning Addresses</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Register service worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered:', registration.scope);
+            })
+            .catch((error) => {
+              console.log('SW registration failed:', error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
