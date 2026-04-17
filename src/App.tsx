@@ -35,9 +35,10 @@ const defaultConfig: AppConfig = {
   theme: "dark",
   relayMetadata: {
     relays: [
-      { url: 'wss://relay.ditto.pub', read: true, write: true },
-      { url: 'wss://relay.primal.net', read: true, write: true },
-      { url: 'wss://relay.damus.io', read: true, write: true },
+      { url: 'wss://relay.getalby.com', read: true, write: true },
+      { url: 'wss://nos.lol', read: true, write: true },
+      { url: 'wss://damus.io', read: true, write: true },
+      { url: 'wss://primal.net', read: true, write: true },
     ],
     updatedAt: 0,
   },

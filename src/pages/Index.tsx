@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { QRCodeCanvas } from '@/components/ui/qrcode';
+import { LoginArea } from '@/components/auth/LoginArea';
 import { NWCHelpDialog } from '@/components/NWCHelpDialog';
 import { useLightningAddressInternal, type LightningAddress } from '@/hooks/useLightningAddress';
 import { useToast } from '@/hooks/useToast';
@@ -535,6 +536,7 @@ export default function Index() {
                   </Button>
                 }
               />
+              <LoginArea className="hidden sm:flex" />
               <Button
                 onClick={() => setShowCreateDialog(true)}
                 className="bg-primary hover:bg-primary/90"
